@@ -1,16 +1,20 @@
-import { View, Text, StyleSheet} from "react-native" 
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { Logo } from "../../components/Logo";
 
 export function Home() {
-    return (
-        <View style={styles.container}>
-            <Text>Home</Text>
-        </View>
-    )
+  return (
+    <SafeAreaView style={styles.container}>
+      <Logo />
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      backgroundColor: "red",
-    }
-  });
-  
+  container: {
+    flex: 1,
+    backgroundColor: "#F3F9FF",
+    paddingTop: 36,
+    paddingStart: 14,
+    paddingEnd: 14,
+  },
+});
