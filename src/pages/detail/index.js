@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,15 +6,18 @@ import {
   Pressable,
   ScrollView,
   Image,
+  Modal,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Entypo, AntDesign, Feather } from "@expo/vector-icons";
 import { Ingredients } from "../../components/ingredients";
 import { Instructions } from "../../components/instructions";
+import { VideoView } from "../../components/video";
 
 export function Detail() {
   const route = useRoute();
   const navigation = useNavigation();
+  const [showVideo, setShowVideo] = useState(true);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -29,9 +32,17 @@ export function Detail() {
     });
   }, [navigation, route.params?.data]);
 
+  function handleOpenVideo() {
+    setShowVideo(true);
+  }
+
   return (
-    <ScrollView contentContainerStyle={{paddingBottom: 14}} style={styles.container} showsVerticalScrollIndicator={false}>
-      <Pressable>
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: 14 }}
+      style={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
+      <Pressable onPress={handleOpenVideo}>
         <View style={styles.playicon}>
           <AntDesign name="playcircleo" size={44} color={"#FAFAFA"} />
         </View>
@@ -52,21 +63,23 @@ export function Detail() {
         </Pressable>
       </View>
       {route.params?.data.ingredients.map((item) => (
-        <Ingredients key={item.id} data={item}/>
+        <Ingredients key={item.id} data={item} />
       ))}
 
-        <View style={styles.instructionsArea}>
-          <Text style={styles.instructionsText}>Modo de preparo</Text>
-          <Feather
-          name="arrow-down"
-          size={24}
-          color={"#FFF"}
-          />
-        </View>
-        {route.params?.data.instructions.map((item, index) => (
-          <Instructions key={item.id} data={item} index={index}/>
-        ))}
+      <View style={styles.instructionsArea}>
+        <Text style={styles.instructionsText}>Modo de preparo</Text>
+        <Feather name="arrow-down" size={24} color={"#FFF"} />
+      </View>
+      {route.params?.data.instructions.map((item, index) => (
+        <Instructions key={item.id} data={item} index={index} />
+      ))}
 
+      <Modal visible={showVideo} animationType="slide">
+        <VideoView
+          handleClose={() => setShowVideo(false)}
+          videoUrl={route.params?.data.video}
+        />
+      </Modal>
     </ScrollView>
   );
 }
@@ -115,12 +128,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 8,
     borderRadius: 4,
-    marginBottom: 14
+    marginBottom: 14,
   },
   instructionsText: {
     fontSize: 18,
     fontWeight: 500,
     color: "#FFF",
-    marginRight: 8
-  }
+    marginRight: 8,
+  },
 });
