@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   Modal,
+  Share,
 } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Entypo, AntDesign, Feather } from "@expo/vector-icons";
@@ -17,7 +18,7 @@ import { VideoView } from "../../components/video";
 export function Detail() {
   const route = useRoute();
   const navigation = useNavigation();
-  const [showVideo, setShowVideo] = useState(true);
+  const [showVideo, setShowVideo] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -34,6 +35,17 @@ export function Detail() {
 
   function handleOpenVideo() {
     setShowVideo(true);
+  }
+
+  async function handleShare() {
+    try {
+      await Share.share({
+        url: "https://github.com/vinivent",
+        message: `Receita: ${route.params?.data.name}\nIngredientes: ${route.params?.data.total_ingredients}\nVi lá no app Receita Fácil!`,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -58,7 +70,7 @@ export function Detail() {
             Ingredientes ({route.params?.data.total_ingredients})
           </Text>
         </View>
-        <Pressable>
+        <Pressable onPress={handleShare}>
           <Feather name="share-2" size={24} color={"#121212"} />
         </Pressable>
       </View>
