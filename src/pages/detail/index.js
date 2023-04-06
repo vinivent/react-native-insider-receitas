@@ -27,6 +27,8 @@ export function Detail() {
       const receipeFavorite = await isFavorite(route.params?.data);
       setFavorite(receipeFavorite);
     }
+    
+    getStatusFavorite();
 
     navigation.setOptions({
       title: route.params?.data
