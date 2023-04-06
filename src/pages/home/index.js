@@ -49,7 +49,14 @@ export function Home() {
       >
         Encontre a receita
       </MotiText>
-      <MotiText style={styles.title}>que combina com você</MotiText>
+      <MotiText
+        style={styles.title}
+        from={{ opacity: 0, translateY: 18 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ delay: 200, type: "timing", duration: 850 }}
+      >
+        que combina com você{" "}
+      </MotiText>
 
       <View style={styles.form}>
         <TextInput
