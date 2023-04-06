@@ -10,12 +10,14 @@ export async function saveFavorite(key, newItem) {
 
   let hasItem = myFavorites.some((item) => item.id === newItem.id);
   if (hasItem) {
+    console.log("ITEM JÁ ESTÁ SALVO.")
     return;
   }
 
   myFavorites.push(newItem);
 
   await AsyncStorage.setItem(key, JSON.stringify(myFavorites));
+  console.log("ITEM SALVO")
 }
 
 export async function removeFavorite(id) {
@@ -26,6 +28,7 @@ export async function removeFavorite(id) {
   });
 
   await AsyncStorage.setItem("@appreceitas", JSON.stringify(myFavorites));
+  console.log("ITEM DELETADO.")
   return myFavorites;
 }
 
