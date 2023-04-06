@@ -13,22 +13,28 @@ import { Ionicons } from "@expo/vector-icons";
 import { Logo } from "../../components/Logo";
 import { FoodCard } from "../../components/foodCard";
 import api from "../../services/api";
+import { useNavigation } from "@react-navigation/native";
 
 export function Home() {
   const [inputValue, setInputValue] = useState("");
   const [foods, setFoods] = useState("");
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function fetchApi() {
       const response = await api.get("/foods");
-      setFoods(response.data)
+      setFoods(response.data);
     }
 
     fetchApi();
   }, []);
 
   function handleSearch() {
-    console.log(inputValue);
+    if (!inputValue) return;
+
+    let input = inputValue;
+    setInputValue("")
+    navigation.navigate("Search", {name: input})
   }
 
   return (
@@ -50,12 +56,11 @@ export function Home() {
       </View>
 
       <FlatList
-      data={foods}
-      keyExtractor={(item) => String(item.id)}
-      renderItem={({item}) => <FoodCard data={item}/> }
-      showsVerticalScrollIndicator={false}
+        data={foods}
+        keyExtractor={(item) => String(item.id)}
+        renderItem={({ item }) => <FoodCard data={item} />}
+        showsVerticalScrollIndicator={false}
       />
-
     </SafeAreaView>
   );
 }
